@@ -87,20 +87,20 @@ exports.login = async (req, res) => {
         if(await bcrypt.compare(password, user.password)){ 
             // Password Match
             let token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "2h"});
-            console.log(user);
             
             
             // This will help to define the value in user object not in database
+            // const user = user.toObejct();
             user.token = token;
-            console.log(user);
 
             // This will help to undefine the password value in user object not in database to get security from hacker.
             user.password = undefined;
-            console.log(user);
 
             const options = {
                 expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-                httpOnly: true
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "lax"
             }
 
             // This function cookie help to get the signIn AuthN for about 3 days.
