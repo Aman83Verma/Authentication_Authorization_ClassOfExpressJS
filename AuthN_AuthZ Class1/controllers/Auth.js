@@ -88,9 +88,15 @@ exports.login = async (req, res) => {
             // Password Match
             let token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "2h"});
             
+            console.log(user);
             
             // This will help to define the value in user object not in database
             // const user = user.toObejct();
+
+            const oldUser = {...user, token};
+            oldUser.password = undefined;
+            console.log(oldUser);
+            
             user.token = token;
 
             // This will help to undefine the password value in user object not in database to get security from hacker.
