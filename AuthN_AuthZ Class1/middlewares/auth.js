@@ -6,7 +6,8 @@ require("dotenv").config();
 exports.auth = (req, res, next) => {
     try{
         // Extracting JWt Token
-        const token = req.body.token || req.cokkies.token;
+        // req.cokkies.token --> Another way to parse the token from body
+        const token = req.body.token;
 
         if(!token){
             return res.status(401).json({
