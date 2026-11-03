@@ -17,10 +17,10 @@ exports.auth = (req, res, next) => {
 
         // Verify the token
         try{
-            const decode = jwt.verify(token, process.env.JWT_SECRET);
-            console.log(decode);
+            const payload = jwt.verify(token, process.env.JWT_SECRET);
+            console.log(payload);
 
-            req.user = decode;
+            req.user = payload;
 
         } catch(error){
             return res.status(401).json({
@@ -46,6 +46,24 @@ exports.isStudent = (req, res, next) => {
                 success: false,
                 message: "This is the protected Route for Students."
             });
+        }
+        next();
+
+    } catch(error) {
+        return res.status(500).json({
+            success: false,
+            message: "User role is not matching."
+        })
+    }
+}
+
+exports.isAdmin = (req, res, next) => {
+    try{
+        if(req.user.role !== "Admin"){
+            return res.status(401).json({
+                success: false,
+                message: "This is the protected Route for Admin."
+            })
         }
         next();
 
