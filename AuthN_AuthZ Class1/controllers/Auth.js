@@ -117,6 +117,13 @@ exports.login = async (req, res) => {
                 message: "User Logged Successfully"
             });
 
+            // res.status(200).json({
+            //     success: true,
+            //     token,
+            //     user,
+            //     message: "User Logged Successfully"
+            // });
+
         }
         else{
             return res.status(403).json({

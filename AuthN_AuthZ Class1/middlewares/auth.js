@@ -7,9 +7,15 @@ exports.auth = (req, res, next) => {
     try{
         // Extracting JWt Token
         // req.cokkies.token --> Another way to parse the token from body
-        const token = req.body.token;
 
-        if(!token){
+        console.log("cookies", req.cookies.token);
+        // console.log("body", req.body.token);
+        
+        console.log("Header", req.header("Authorization"));
+        
+        const token = req.cookies.token || req.body.token || req.header("Authorization").replace("Bearer ", "");
+
+        if(!token || token === undefined){
             return res.status(401).json({
                 success: false,
                 message: "Token is Missing."
@@ -34,7 +40,8 @@ exports.auth = (req, res, next) => {
     } catch(error){
         return res.status(401).json({
             success: false,
-            message: "Something went wrong, while verifying the token"
+            message: "Something went wrong, while verifying the token",
+            error: error.message
         })
     }
 }
